@@ -1,0 +1,13 @@
+                                             Rodio Stampede
+
+projectile jump
+
+Animal Movement
+
+Player Controller
+
+Score function
+
+Sound
+
+UI score
