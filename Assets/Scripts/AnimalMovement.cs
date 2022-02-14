@@ -5,7 +5,7 @@ using UnityEngine;
 public class AnimalMovement : MonoBehaviour
 {
     private Rigidbody animalRb;
-    private float force=1f;
+    public float force=3f;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +15,7 @@ public class AnimalMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //AnimalMovement
         animalRb.AddForce(Vector3.forward * force);
     }
 }

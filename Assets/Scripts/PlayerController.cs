@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI scoreText;
     private AudioSource Audio;
     public AudioClip Clip;
+    private GameObject child;
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
@@ -19,11 +20,18 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        //Audio Play
         Audio.PlayOneShot(Clip);
+        //Projectile Motion
         if (Input.GetKeyDown(KeyCode.Space))
         {
             playerRb.AddRelativeForce(0, 4f, 5f, ForceMode.Impulse);
             StartCoroutine(GravityUse());
+            if (child != null)
+            {
+                gameObject.transform.DetachChildren();
+            }
+            
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -34,29 +42,30 @@ public class PlayerController : MonoBehaviour
             playerRb.AddRelativeForce(-5f, 0, 0, ForceMode.Impulse);
         }
     }
+    //Gravity Enabled
     IEnumerator GravityUse()
     {
         yield return new WaitForSeconds(0.5f);
         playerRb.useGravity = true;
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Animal"))
-        {
-            playerRb.isKinematic = true;
-            other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-            AddScore(25);
-        }
-        if (other.CompareTag("Ground"))
-        {
-            Destroy(gameObject);
-        }
-    }
+    //Score Add
     private void AddScore(int ScoretoAdd)
     {
         Score += ScoretoAdd;
         Debug.Log("Score:" + Score);
         scoreText.text = "Score:  " + Score;
+    }
+    //Collision with Animal
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Animal"))
+        {
+            AddScore(25);
+            collision.gameObject.transform.parent = transform;
+            child = collision.gameObject;
+            child.GetComponent<Rigidbody>().isKinematic = true;
+            transform.position = new Vector3(transform.position.x, 1.61f, transform.position.z);
+            child.transform.position = new Vector3(transform.position.x, transform.position.y - 1.2f, transform.position.z);
+        }
     }
 }

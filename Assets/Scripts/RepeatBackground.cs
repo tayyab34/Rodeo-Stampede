@@ -17,6 +17,7 @@ public class RepeatBackground : MonoBehaviour
     
     void Update()
     {
+        //repeating background
         transform.Translate(Vector3.back * speed * Time.deltaTime);
         if (transform.position.z < startPos.z - repeatwidth) 
         {
