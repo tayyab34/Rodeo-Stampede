@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(GravityUse());
             if (child != null)
             {
-                gameObject.transform.DetachChildren();
+                child.transform.parent = null;
             }
             
         }
